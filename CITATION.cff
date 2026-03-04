@@ -1,0 +1,20 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+title: "Standard Duplicate Finder (Contacts & Leads)"
+type: software
+authors:
+  - family-names: "Roy"
+    given-names: "Jyotishko"
+    orcid: "https://orcid.org/0009-0000-2837-4731"
+license: "Apache-2.0"
+repository-code: "https://github.com/<your-github-handle>/standard-duplicate-finder-lwc"
+url: "https://github.com/<your-github-handle>/standard-duplicate-finder-lwc"
+preferred-citation:
+  type: software
+  authors:
+    - family-names: "Roy"
+      given-names: "Jyotishko"
+      orcid: "https://orcid.org/0009-0000-2837-4731"
+  title: "Standard Duplicate Finder (Contacts & Leads)"
+  year: 2026
+  url: "https://github.com/<your-github-handle>/standard-duplicate-finder-lwc"

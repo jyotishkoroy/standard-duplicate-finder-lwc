@@ -1,0 +1,30 @@
+.sdf-shell{padding:.75rem}
+.sdf-header{display:flex;justify-content:space-between;align-items:center;background:linear-gradient(135deg,rgba(1,118,211,.14),rgba(46,132,74,.10));border:1px solid rgba(0,0,0,.08);border-radius:.75rem;padding:.75rem 1rem;margin-bottom:.75rem}
+.sdf-brand{display:flex;gap:.65rem;align-items:center}
+.sdf-title{font-weight:700;font-size:1.05rem;letter-spacing:.2px}
+.sdf-subtitle{font-size:.78rem;opacity:.85;margin-top:.1rem}
+.sdf-creditLink{font-size:.78rem;text-decoration:none}
+.sdf-creditLink:hover{text-decoration:underline}
+.sdf-grid{display:grid;grid-template-columns:1fr 1fr;gap:.75rem}
+@media (max-width:900px){.sdf-grid{grid-template-columns:1fr}}
+.sdf-panel{background:#fff;border:1px solid rgba(0,0,0,.08);border-radius:.75rem;padding:.85rem;box-shadow:0 6px 18px rgba(0,0,0,.04);min-height:250px}
+.sdf-panelTitle{font-weight:700;margin-bottom:.75rem}
+.sdf-panelTitle--minor{margin-top:.85rem;font-weight:600;opacity:.9}
+.sdf-formRow{display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin-bottom:.65rem}
+@media (max-width:520px){.sdf-formRow{grid-template-columns:1fr}}
+.sdf-actions{display:flex;gap:.5rem;margin-top:.85rem;align-items:center}
+.sdf-actions--right{justify-content:flex-end}
+.sdf-error{display:flex;gap:.5rem;align-items:flex-start;margin-top:.75rem;padding:.65rem .75rem;border-radius:.5rem;border:1px solid rgba(186,5,23,.25);background:rgba(186,5,23,.06);color:rgba(186,5,23,1);font-size:.82rem}
+.sdf-metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:.5rem;margin-bottom:.75rem}
+.sdf-metric{border:1px solid rgba(0,0,0,.08);border-radius:.65rem;padding:.65rem;background:rgba(250,250,251,.9)}
+.sdf-metricLabel{font-size:.75rem;opacity:.75;margin-bottom:.25rem}
+.sdf-metricValue{font-size:1.25rem;font-weight:800}
+.sdf-note{font-size:.82rem;opacity:.9;border-left:4px solid rgba(1,118,211,.4);padding:.5rem .75rem;background:rgba(1,118,211,.06);border-radius:.5rem;margin-top:.6rem}
+.sdf-pill{display:inline-flex;align-items:center;padding:.15rem .5rem;border-radius:999px;font-size:.7rem;font-weight:800;letter-spacing:.3px;border:1px solid rgba(0,0,0,.08);background:rgba(0,0,0,.04)}
+.sdf-pill--email{background:rgba(1,118,211,.10);border-color:rgba(1,118,211,.25)}
+.sdf-pill--phone{background:rgba(46,132,74,.10);border-color:rgba(46,132,74,.25)}
+.sdf-pill--name{background:rgba(250,163,27,.14);border-color:rgba(250,163,27,.25)}
+.sdf-groupCard{border:1px solid rgba(0,0,0,.08);border-radius:.75rem;padding:.75rem;margin:.75rem 0;background:#fff;box-shadow:0 6px 18px rgba(0,0,0,.03)}
+.sdf-groupHeader{display:flex;justify-content:space-between;align-items:flex-start;gap:.75rem;margin-bottom:.65rem}
+.sdf-groupKey{font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:520px}
+.sdf-aboutCard{background:#fff;border:1px solid rgba(0,0,0,.08);border-radius:.75rem;padding:1rem;box-shadow:0 6px 18px rgba(0,0,0,.03);max-width:980px}

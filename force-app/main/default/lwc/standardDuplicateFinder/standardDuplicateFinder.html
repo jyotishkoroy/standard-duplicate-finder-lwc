@@ -1,0 +1,167 @@
+<template>
+    <div class="sdf-shell">
+        <header class="sdf-header">
+            <div class="sdf-brand">
+                <lightning-icon icon-name="standard:search" size="small" alternative-text="Duplicate Finder"></lightning-icon>
+                <div class="sdf-titleWrap">
+                    <div class="sdf-title">Standard Duplicate Finder</div>
+                    <div class="sdf-subtitle">Contacts &amp; Leads • Heuristic matching • Export-only</div>
+                </div>
+            </div>
+
+            <div class="sdf-credit">
+                <a href="https://orcid.org/0009-0000-2837-4731" target="_blank" rel="noopener noreferrer" class="sdf-creditLink">
+                    Built by Jyotishko Roy
+                </a>
+            </div>
+        </header>
+
+        <lightning-tabset variant="scoped">
+            <lightning-tab label="Scan">
+                <div class="sdf-grid">
+                    <section class="sdf-panel">
+                        <div class="sdf-panelTitle">Scan Configuration</div>
+
+                        <div class="sdf-formRow">
+                            <lightning-combobox
+                                name="objectApiName"
+                                label="Object"
+                                value={objectApiName}
+                                options={objectOptions}
+                                onchange={handleObjectChange}>
+                            </lightning-combobox>
+
+                            <lightning-combobox
+                                name="scope"
+                                label="Scope"
+                                value={scope}
+                                options={scopeOptions}
+                                onchange={handleScopeChange}>
+                            </lightning-combobox>
+                        </div>
+
+                        <div class="sdf-formRow">
+                            <lightning-input type="number" min="100" max="10000" step="100"
+                                label="Record limit (guardrail)" value={recordLimit} onchange={handleLimitChange}>
+                            </lightning-input>
+
+                            <lightning-input type="number" min="5" max="10" step="1"
+                                label="Phone match: compare last N digits" value={phoneLastDigits} onchange={handlePhoneDigitsChange}>
+                            </lightning-input>
+                        </div>
+
+                        <div class="sdf-panelTitle sdf-panelTitle--minor">Match signals</div>
+                        <div class="sdf-chips">
+                            <lightning-input type="toggle" label="Email" checked={matchEmail} onchange={toggleEmail}></lightning-input>
+                            <lightning-input type="toggle" label="Phone" checked={matchPhone} onchange={togglePhone}></lightning-input>
+                            <lightning-input type="toggle" label="Name" checked={matchName} onchange={toggleName}></lightning-input>
+                        </div>
+
+                        <div class="sdf-actions">
+                            <lightning-button variant="brand" label="Scan" onclick={handleScan} disabled={scanDisabled}></lightning-button>
+                            <lightning-button variant="neutral" label="Reset" onclick={handleReset} disabled={isBusy}></lightning-button>
+                        </div>
+
+                        <template if:true={errorMessage}>
+                            <div class="sdf-error" role="alert">
+                                <lightning-icon icon-name="utility:error" size="x-small"></lightning-icon>
+                                <span>{errorMessage}</span>
+                            </div>
+                        </template>
+                    </section>
+
+                    <section class="sdf-panel">
+                        <div class="sdf-panelTitle">Snapshot</div>
+
+                        <div class="sdf-metrics">
+                            <div class="sdf-metric">
+                                <div class="sdf-metricLabel">Scanned</div>
+                                <div class="sdf-metricValue">{metrics.scanned}</div>
+                            </div>
+                            <div class="sdf-metric">
+                                <div class="sdf-metricLabel">Groups</div>
+                                <div class="sdf-metricValue">{metrics.groups}</div>
+                            </div>
+                            <div class="sdf-metric">
+                                <div class="sdf-metricLabel">Records in groups</div>
+                                <div class="sdf-metricValue">{metrics.recordsInGroups}</div>
+                            </div>
+                        </div>
+
+                        <div class="sdf-note">
+                            Tip: In large orgs, start with <b>Last 30/90 days</b> and increase the limit gradually.
+                        </div>
+
+                        <template if:true={hasResults}>
+                            <div class="sdf-actions sdf-actions--right">
+                                <lightning-button variant="neutral" label="Export CSV" onclick={exportCsv} disabled={isBusy}></lightning-button>
+                            </div>
+                        </template>
+
+                        <template if:true={isBusy}>
+                            <lightning-spinner size="medium" alternative-text="Scanning"></lightning-spinner>
+                        </template>
+
+                        <template if:false={hasResults}>
+                            <div class="sdf-note" style="margin-top:.75rem">
+                                Run a scan to view grouped results and drill down.
+                            </div>
+                        </template>
+                    </section>
+                </div>
+            </lightning-tab>
+
+            <lightning-tab label="Results">
+                <template if:true={hasResults}>
+                    <template for:each={groupedByType} for:item="section">
+                        <div key={section.type} class="sdf-panel" style="margin-bottom:.75rem">
+                            <div class="sdf-panelTitle">{section.label}</div>
+
+                            <template for:each={section.groups} for:item="g">
+                                <div key={g.uid} class="sdf-groupCard">
+                                    <div class="sdf-groupHeader">
+                                        <div style="display:flex;gap:.65rem;align-items:center;min-width:0">
+                                            <span class={g.pillClass}>{g.matchType}</span>
+                                            <div class="sdf-groupKey" title={g.key}>{g.key}</div>
+                                        </div>
+                                        <div style="font-weight:800;white-space:nowrap">{g.count} records</div>
+                                    </div>
+
+                                    <lightning-datatable
+                                        key-field="id"
+                                        data={g.records}
+                                        columns={recordColumns}
+                                        hide-checkbox-column
+                                        onrowaction={handleRowAction}>
+                                    </lightning-datatable>
+                                </div>
+                            </template>
+                        </div>
+                    </template>
+                </template>
+
+                <template if:false={hasResults}>
+                    <div class="sdf-panel">
+                        No results yet. Run a scan from the <b>Scan</b> tab.
+                    </div>
+                </template>
+            </lightning-tab>
+
+            <lightning-tab label="About">
+                <div class="sdf-aboutCard">
+                    <div class="sdf-panelTitle">About</div>
+                    <p>
+                        This tool performs <b>read-only</b> duplicate discovery using conservative heuristics.
+                        It does not modify records or create custom objects.
+                    </p>
+                    <p>
+                        Author: <a href="https://orcid.org/0009-0000-2837-4731" target="_blank" rel="noopener noreferrer">Jyotishko Roy</a>
+                    </p>
+                    <div style="font-size:.78rem;opacity:.75;margin-top:1rem">
+                        Version: {versionInfo.version}
+                    </div>
+                </div>
+            </lightning-tab>
+        </lightning-tabset>
+    </div>
+</template>
